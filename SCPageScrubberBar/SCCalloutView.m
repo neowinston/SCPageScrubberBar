@@ -63,8 +63,16 @@
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    CGSize titleLabelSize = [self.titleLabel.text sizeWithFont:self.titleLabel.font];
-    CGSize subTitleLabelSize = [self.subtitleLabel.text sizeWithFont:self.subtitleLabel.font];
+    CGSize titleLabelSize = [self.titleLabel.text boundingRectWithSize:size
+                                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                                            attributes:@{ NSFontAttributeName: self.titleLabel.font }
+                                                               context:nil].size;
+    
+    CGSize subTitleLabelSize = [self.subtitleLabel.text boundingRectWithSize:size
+                                                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                                                  attributes:@{ NSFontAttributeName:self.subtitleLabel.font }
+                                                                     context: nil].size;
+    
     // Get the max width of the two labels
     CGFloat maxLabelsWidth = MAX(titleLabelSize.width, subTitleLabelSize.width);
     
@@ -177,7 +185,7 @@
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
             _titleLabel.textAlignment = NSTextAlignmentCenter;
         } else {
-            _titleLabel.textAlignment = UITextAlignmentCenter;
+            _titleLabel.textAlignment = NSTextAlignmentCenter;
         }
     }
     return _titleLabel;
@@ -196,7 +204,7 @@
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
             _subtitleLabel.textAlignment = NSTextAlignmentCenter;
         } else {
-            _subtitleLabel.textAlignment = UITextAlignmentCenter;
+            _subtitleLabel.textAlignment = NSTextAlignmentCenter;
         }
     }
     return _subtitleLabel;
